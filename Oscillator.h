@@ -2,10 +2,11 @@
 #include <math.h>
 
 enum OscillatorMode {
-  OSCILLATOR_MODE_SINE,
-  OSCILLATOR_MODE_TRIANGLE,
+  OSCILLATOR_MODE_SINE = 0,
   OSCILLATOR_MODE_SAW,
   OSCILLATOR_MODE_SQUARE,
+  OSCILLATOR_MODE_TRIANGLE,
+  kNumOscillatorModes
 };
 
 class Oscillator
@@ -14,19 +15,27 @@ public:
   Oscillator();
   ~Oscillator();
 
-  inline void setLength(unsigned short length) {
+  inline void setLength(unsigned short length) 
+  {
     mLength = length;
     mSegLength = twoPI / mLength;
   }
   
-  inline void setMode(OscillatorMode mode) {
+  inline void setMode(OscillatorMode mode) 
+  {
     mOscillatorMode = mode;
   }
-  inline void setFrequency(double frequency) {
+  
+  inline void setFrequency(double frequency) 
+  {
     mFrequency = frequency;
+    updateIncrement();
   }
-  inline void setSampleRate(double sampleRate) {
+
+  inline void setSampleRate(double sampleRate) 
+  {
     mSampleRate = sampleRate;
+    updateIncrement();
   }
 
   inline void setMuted(bool muted)
@@ -37,7 +46,8 @@ public:
   double nextSample();
 
 private:
-  void updateIncrement() {
+  inline void updateIncrement() 
+  {
     mPhaseIncrement = mFrequency * 2 * mPI / mSampleRate;
   }
 

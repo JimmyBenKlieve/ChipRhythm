@@ -1,5 +1,11 @@
 #include "resource.h"
 
+BG_ID         PNG BG_FN
+WHITE_KEY_ID  PNG WHITE_KEY_FN
+BLACK_KEY_ID  PNG BLACK_KEY_FN
+
+OSCILLATOR_MODE_ID    PNG OSCILLATOR_MODE_FN
+
 #ifdef SA_API
 //Standalone stuff
 #include <windows.h>

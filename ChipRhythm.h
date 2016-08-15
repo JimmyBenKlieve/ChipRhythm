@@ -17,10 +17,29 @@ public:
   void ProcessDoubleReplacing(double **inputs, double **outputs, int nFrames);
   void ProcessMidiMsg(IMidiMsg *pMsg);
 
-private:
-  void CreatePresets();
+  inline int GetNumKeys() const
+  {
+    return mMIDIReceiver.getNumKeys();
+  }
+
+  inline bool GetKeyStatus(int key) const
+  {
+    return mMIDIReceiver.getKeyStatus(key);
+  }
+
+  int lastVirtualKeyboardNoteNumber;
+  
+  static const int virtualKeyboardMinimumNoteNumber = 48;
 
 private:
+  void ProcessVirtualKeyboard();
+
+  void CreatePresets();
+
+
+private:
+  IControl *mVirtualKeyboard;
+
   MIDIReceiver mMIDIReceiver;
   Oscillator mOscillator;
 };

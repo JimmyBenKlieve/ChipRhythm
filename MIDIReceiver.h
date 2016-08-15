@@ -17,14 +17,17 @@ public:
   {
     return mNumKeys;
   }
+   
   inline int getLastNoteNumber() const
   {
     return mLastNoteNumber;
   }
+  
   inline int getLastVelocity() const
   {
     return mLastVelocity;
   }
+  
   inline double getLastFrequency() const
   {
     return mLastFrequency;
@@ -38,6 +41,7 @@ public:
     mMidiQueue.Flush(nFrames);
     mOffset = 0;
   }
+
   inline void resize(int blockSize)
   {
     mMidiQueue.Resize(blockSize);

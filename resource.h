@@ -58,12 +58,22 @@ instrument determined by PLUG _IS _INST
 #define PLUG_DOES_STATE_CHUNKS 0
 
 // Unique IDs for each image resource.
+#define BG_ID         101
+#define WHITE_KEY_ID  102
+#define BLACK_KEY_ID  103
+
+#define OSCILLATOR_MODE_ID  110
 
 // Image resource locations for this plug.
+#define BG_FN         "resources/img/bg.png"
+#define WHITE_KEY_FN  "resources/img/whitekey.png"
+#define BLACK_KEY_FN  "resources/img/blackkey.png"
+
+#define OSCILLATOR_MODE_FN  "resources/img/waveform.png"
 
 // GUI default dimensions
-#define GUI_WIDTH 300
-#define GUI_HEIGHT 300
+#define GUI_WIDTH 434
+#define GUI_HEIGHT 144
 
 // on MSVC, you must define SA_API in the resource editor preprocessor macros as well as the c++ ones
 #if defined(SA_API) && !defined(OS_IOS)
