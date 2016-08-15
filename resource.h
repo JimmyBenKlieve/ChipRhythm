@@ -43,21 +43,23 @@
 instrument determined by PLUG _IS _INST
 */
 
+#if (defined(AAX_API) || defined(RTAS_API))
 #define PLUG_CHANNEL_IO "1-1 2-2"
+#else
+#define PLUG_CHANNEL_IO "0-1 0-2"
+#endif
 
 #define PLUG_LATENCY 0
-#define PLUG_IS_INST 0
+#define PLUG_IS_INST 1
 
 // if this is 0 RTAS can't get tempo info
-#define PLUG_DOES_MIDI 0
+#define PLUG_DOES_MIDI 1
 
 #define PLUG_DOES_STATE_CHUNKS 0
 
 // Unique IDs for each image resource.
-#define KNOB_ID 101
 
 // Image resource locations for this plug.
-#define KNOB_FN "resources/img/knob.png"
 
 // GUI default dimensions
 #define GUI_WIDTH 300
@@ -71,7 +73,7 @@ instrument determined by PLUG _IS _INST
 // vst3 stuff
 #define MFR_URL "www.olilarkin.co.uk"
 #define MFR_EMAIL "spam@me.com"
-#define EFFECT_TYPE_VST3 "Fx"
+#define EFFECT_TYPE_VST3 "Instrument|Synth"
 
 /* "Fx|Analyzer"", "Fx|Delay", "Fx|Distortion", "Fx|Dynamics", "Fx|EQ", "Fx|Filter",
 "Fx", "Fx|Instrument", "Fx|InstrumentExternal", "Fx|Spatial", "Fx|Generator",

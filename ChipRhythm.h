@@ -3,6 +3,9 @@
 
 #include "IPlug_include_in_plug_hdr.h"
 
+#include "Oscillator.h"
+#include "MIDIReceiver.h"
+
 class ChipRhythm : public IPlug
 {
 public:
@@ -11,9 +14,15 @@ public:
 
   void Reset();
   void OnParamChange(int paramIdx);
-  void ProcessDoubleReplacing(double** inputs, double** outputs, int nFrames);
+  void ProcessDoubleReplacing(double **inputs, double **outputs, int nFrames);
+  void ProcessMidiMsg(IMidiMsg *pMsg);
 
 private:
+  void CreatePresets();
+
+private:
+  MIDIReceiver mMIDIReceiver;
+  Oscillator mOscillator;
 };
 
 #endif

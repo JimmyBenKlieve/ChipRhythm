@@ -11,6 +11,7 @@
 *.depend
 *.layout
 *.mode1v3
+*.opendb
 *.db
 *.LSOverride
 *.xcworkspace

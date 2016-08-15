@@ -13,9 +13,7 @@ enum EParams
 enum ELayout
 {
   kWidth = GUI_WIDTH,
-  kHeight = GUI_HEIGHT,
-
-  kKnobFrames = 60
+  kHeight = GUI_HEIGHT
 };
 
 ChipRhythm::ChipRhythm(IPlugInstanceInfo instanceInfo)
@@ -23,45 +21,52 @@ ChipRhythm::ChipRhythm(IPlugInstanceInfo instanceInfo)
 {
   TRACE;
 
-  //arguments are: name, defaultVal, minVal, maxVal, step, label
-  // GetParam(kGain)->InitDouble("Gain", 50., 0., 100.0, 0.01, "%");
-  // GetParam(kGain)->SetShape(2.);
-
   IGraphics* pGraphics = MakeGraphics(this, kWidth, kHeight);
   pGraphics->AttachPanelBackground(&COLOR_RED);
 
-  IBitmap knob = pGraphics->LoadIBitmap(KNOB_ID, KNOB_FN, kKnobFrames);
-
-  // pGraphics->AttachControl(new IKnobMultiControl(this, kGainX, kGainY, kGain, &knob));
-
   AttachGraphics(pGraphics);
 
-  //MakePreset("preset 1", ... );
-  MakeDefaultPreset((char *) "-", kNumPrograms);
+  CreatePresets();
 }
 
 ChipRhythm::~ChipRhythm() {}
 
-void ChipRhythm::ProcessDoubleReplacing(double** inputs, double** outputs, int nFrames)
+void ChipRhythm::ProcessDoubleReplacing(double **inputs, double **outputs, int nFrames)
 {
   // Mutex is already locked for us.
 
-  double* in1 = inputs[0];
-  double* in2 = inputs[1];
-  double* out1 = outputs[0];
-  double* out2 = outputs[1];
+  double *leftOutput = outputs[0];
+  double *rightOutput = outputs[1];
 
-  for (int s = 0; s < nFrames; ++s, ++in1, ++in2, ++out1, ++out2)
-  {
-    *out1 = *in1;
-    *out2 = *in2;
+  for (int i = 0; i < nFrames; ++i) {
+    mMIDIReceiver.advance();
+
+    int velocity = mMIDIReceiver.getLastVelocity();
+    if (velocity > 0) {
+      mOscillator.setFrequency(mMIDIReceiver.getLastFrequency());
+      mOscillator.setMuted(false);
+    }
+    else {
+      mOscillator.setMuted(true);
+    }
+
+    leftOutput[i] = rightOutput[i] = mOscillator.nextSample() * velocity / 127.0;
   }
+
+  mMIDIReceiver.flush(nFrames);
+}
+
+void ChipRhythm::ProcessMidiMsg(IMidiMsg * pMsg)
+{
+  mMIDIReceiver.onMessageReceived(pMsg);
 }
 
 void ChipRhythm::Reset()
 {
   TRACE;
   IMutexLock lock(this);
+
+  mOscillator.setSampleRate(GetSampleRate());
 }
 
 void ChipRhythm::OnParamChange(int paramIdx)
@@ -70,7 +75,12 @@ void ChipRhythm::OnParamChange(int paramIdx)
 
   switch (paramIdx)
   {
-    default:
-      break;
+  default:
+    break;
   }
+}
+
+void ChipRhythm::CreatePresets() 
+{
+  MakeDefaultPreset((char *) "-", kNumParams);
 }
