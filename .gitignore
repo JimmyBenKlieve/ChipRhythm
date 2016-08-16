@@ -20,6 +20,7 @@
 build-*
 ipch/*
 gui/*
+design/*
 
 Icon?
 .DS_Stor*

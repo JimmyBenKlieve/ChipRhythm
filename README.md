@@ -18,7 +18,9 @@ I also used these free tools to help me finishing this work:
 * SAVIHost - testing VST version plugins: [http://www.hermannseib.com/english/savihost.htm](http://www.hermannseib.com/english/savihost.htm)
 
 # How to use this repository
-1. Clone wdl-ol repository to you local disk
+**Please make sure you have Visual Studio 2015 installed on your computer**
+
+1. Clone wdl-ol repository to you local disk and change to "vs2015x" branch
 2. Follow the steps described in "wdl-ol/XXXX_SDK/readme.txt" and configure one or more SDKs you want.
 3. Clone this repository under "wdl-ol/IPuginExamples/" folder
 4. If you want to test VST2 and/or VST3 build, download corresponding versions of SAVIhost from link above,
@@ -44,7 +46,10 @@ Plogue Chipsound 其实挺强大的，不过大概是我当时（大约三年前
 
 # 如何使用这个Repo
 <del>啊呀呀！我懒癌发作了，不写了...</del>
-1. 下载 wdl-ol 库解压到某个地方，或者省事点的直接走一发 git clone
+
+**请确保你电脑上安装Visual Studio 2015**
+
+1. 下载 wdl-ol 库解压到某个地方，或者省事点的直接走一发 git clone，然后切换到 vs2015x 分支下
 2. 请阅读 wdl-ol/XXX_SDK/ 文件夹里面十分有爱的 readme.txt 跟着里面的说明进行配置就好
 3. 下载这个 repo，或者 git clone 这个 repo 到 wdl-ol/IPluginExamples/ 文件夹里面
 4. 如果需要调试 VST2 或者 VST3，跟着上面的链接下载对应的 SAVIHost。
