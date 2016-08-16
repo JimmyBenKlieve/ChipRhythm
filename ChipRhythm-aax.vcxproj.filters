@@ -57,6 +57,7 @@
     </ClCompile>
     <ClCompile Include="Oscillator.cpp" />
     <ClCompile Include="MIDIReceiver.cpp" />
+    <ClCompile Include="EnvelopeGenerator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\WDL\IPlug\Containers.h">
@@ -117,6 +118,9 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="Oscillator.h" />
     <ClInclude Include="MIDIReceiver.h" />
+    <ClInclude Include="EnvelopeGenerator.h" />
+    <ClInclude Include="GallantSignal.h" />
+    <ClInclude Include="Delegate.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="ChipRhythm.rc" />

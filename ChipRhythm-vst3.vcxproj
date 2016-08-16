@@ -324,6 +324,9 @@
     <ClInclude Include="..\..\VST3_SDK\public.sdk\source\vst\vstsinglecomponenteffect.h" />
     <ClInclude Include="..\..\WDL\IPlug\IPlugVST3.h" />
     <ClInclude Include="ChipRhythm.h" />
+    <ClInclude Include="Delegate.h" />
+    <ClInclude Include="EnvelopeGenerator.h" />
+    <ClInclude Include="GallantSignal.h" />
     <ClInclude Include="MIDIReceiver.h" />
     <ClInclude Include="Oscillator.h" />
     <ClInclude Include="resource.h" />
@@ -343,6 +346,7 @@
     <ClCompile Include="..\..\VST3_SDK\public.sdk\source\vst\vstsinglecomponenteffect.cpp" />
     <ClCompile Include="..\..\WDL\IPlug\IPlugVST3.cpp" />
     <ClCompile Include="ChipRhythm.cpp" />
+    <ClCompile Include="EnvelopeGenerator.cpp" />
     <ClCompile Include="MIDIReceiver.cpp" />
     <ClCompile Include="Oscillator.cpp" />
   </ItemGroup>

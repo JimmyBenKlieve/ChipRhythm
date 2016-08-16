@@ -453,6 +453,7 @@ CALL ..\..\AAX_SDK\Utilities\CreatePackage.bat $(OutDir) ..\..\AAX_SDK\Utilities
     <ClCompile Include="..\..\WDL\IPlug\IPlugAAX.cpp" />
     <ClCompile Include="..\..\WDL\IPlug\AAX\IPlugAAX_Describe.cpp" />
     <ClCompile Include="ChipRhythm.cpp" />
+    <ClCompile Include="EnvelopeGenerator.cpp" />
     <ClCompile Include="MIDIReceiver.cpp" />
     <ClCompile Include="Oscillator.cpp" />
   </ItemGroup>
@@ -505,6 +506,9 @@ CALL ..\..\AAX_SDK\Utilities\CreatePackage.bat $(OutDir) ..\..\AAX_SDK\Utilities
     <ClInclude Include="..\..\WDL\IPlug\AAX\AAX_CIPlugParameters.h" />
     <ClInclude Include="..\..\WDL\IPlug\IPlugAAX.h" />
     <ClInclude Include="ChipRhythm.h" />
+    <ClInclude Include="Delegate.h" />
+    <ClInclude Include="EnvelopeGenerator.h" />
+    <ClInclude Include="GallantSignal.h" />
     <ClInclude Include="MIDIReceiver.h" />
     <ClInclude Include="Oscillator.h" />
     <ClInclude Include="resource.h" />

@@ -255,6 +255,9 @@
   <ItemGroup>
     <ClInclude Include="..\..\WDL\IPlug\IPlugVST.h" />
     <ClInclude Include="ChipRhythm.h" />
+    <ClInclude Include="Delegate.h" />
+    <ClInclude Include="EnvelopeGenerator.h" />
+    <ClInclude Include="GallantSignal.h" />
     <ClInclude Include="MIDIReceiver.h" />
     <ClInclude Include="Oscillator.h" />
     <ClInclude Include="resource.h" />
@@ -262,6 +265,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\WDL\IPlug\IPlugVST.cpp" />
     <ClCompile Include="ChipRhythm.cpp" />
+    <ClCompile Include="EnvelopeGenerator.cpp" />
     <ClCompile Include="MIDIReceiver.cpp" />
     <ClCompile Include="Oscillator.cpp" />
   </ItemGroup>

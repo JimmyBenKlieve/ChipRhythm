@@ -5,6 +5,7 @@
 
 #include "Oscillator.h"
 #include "MIDIReceiver.h"
+#include "EnvelopeGenerator.h"
 
 class ChipRhythm : public IPlug
 {
@@ -33,15 +34,24 @@ public:
 
 private:
   void ProcessVirtualKeyboard();
-
   void CreatePresets();
 
+  inline void onNoteOn(const int noteNumber, const int velocity) 
+  {
+    mEnvelopeGenerator.enterStage(EnvelopeGenerator::ENVELOPE_STAGE_DELAY);
+  }
+
+  inline void onNoteOff(const int noteNumber, const int velocity) 
+  {
+    mEnvelopeGenerator.enterStage(EnvelopeGenerator::ENVELOPE_STAGE_RELEASE);
+  }
 
 private:
   IControl *mVirtualKeyboard;
 
   MIDIReceiver mMIDIReceiver;
   Oscillator mOscillator;
+  EnvelopeGenerator mEnvelopeGenerator;
 };
 
 #endif

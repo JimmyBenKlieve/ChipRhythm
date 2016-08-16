@@ -2,6 +2,8 @@
 #include "IPlug_include_in_plug_hdr.h"
 
 #include "IMidiQueue.h"
+#include "GallantSignal.h"
+using Gallant::Signal2;
 
 class MIDIReceiver
 {
@@ -52,6 +54,10 @@ private:
   {
     return 440.0 * pow(2.0, (noteNumber - 69.0) / 12.0);
   }
+
+public:
+  Signal2<int, int> noteOn;
+  Signal2<int, int> noteOff;
 
 private:
   IMidiQueue mMidiQueue;

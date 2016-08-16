@@ -43,6 +43,7 @@
     </ClCompile>
     <ClCompile Include="Oscillator.cpp" />
     <ClCompile Include="MIDIReceiver.cpp" />
+    <ClCompile Include="EnvelopeGenerator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ChipRhythm.h" />
@@ -145,6 +146,9 @@
     </ClInclude>
     <ClInclude Include="Oscillator.h" />
     <ClInclude Include="MIDIReceiver.h" />
+    <ClInclude Include="EnvelopeGenerator.h" />
+    <ClInclude Include="GallantSignal.h" />
+    <ClInclude Include="Delegate.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="vst3">

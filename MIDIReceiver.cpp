@@ -40,10 +40,14 @@ void MIDIReceiver::advance()
         mNumKeys += 1;
       }
 
+      // a key pressed later overrides any previously pressed key
       if (noteNumber != mLastNoteNumber) {
         mLastNoteNumber = noteNumber;
         mLastFrequency = noteNumberToFrequency(mLastNoteNumber);
         mLastVelocity = velocity;
+
+        // emit a "note on" signal
+        noteOn(noteNumber, velocity);
       }
     }
     else {
@@ -52,10 +56,12 @@ void MIDIReceiver::advance()
         mNumKeys -= 1;
       }
 
+      // last note released, nothing should play
       if (noteNumber == mLastNoteNumber) {
         mLastNoteNumber = -1;
-        mLastFrequency = -1.0;
-        mLastVelocity = 0;
+
+        // emit a "note off" signal
+        noteOff(noteNumber, mLastVelocity);
       }
     }
     mMidiQueue.Remove();

@@ -120,6 +120,9 @@
     </ClInclude>
     <ClInclude Include="Oscillator.h" />
     <ClInclude Include="MIDIReceiver.h" />
+    <ClInclude Include="EnvelopeGenerator.h" />
+    <ClInclude Include="GallantSignal.h" />
+    <ClInclude Include="Delegate.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\WDL\IPlug\Hosts.cpp">
@@ -182,6 +185,7 @@
     </ClCompile>
     <ClCompile Include="Oscillator.cpp" />
     <ClCompile Include="MIDIReceiver.cpp" />
+    <ClCompile Include="EnvelopeGenerator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ChipRhythm-rtas.def" />

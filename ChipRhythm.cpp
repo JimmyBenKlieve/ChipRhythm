@@ -9,6 +9,11 @@ const int kNumPrograms = 1;
 enum EParams
 {
   kWaveform = 0,
+  kEnvAttack,
+  kEnvDelay,
+  kEnvDecay,
+  kEnvSustain,
+  kEnvRelease,
   kNumParams
 };
 
@@ -49,6 +54,9 @@ ChipRhythm::ChipRhythm(IPlugInstanceInfo instanceInfo)
   AttachGraphics(pGraphics);
 
   CreatePresets();
+
+  mMIDIReceiver.noteOn.Connect(this, &ChipRhythm::onNoteOn);
+  mMIDIReceiver.noteOff.Connect(this, &ChipRhythm::onNoteOff);
 }
 
 ChipRhythm::~ChipRhythm() {}
@@ -98,7 +106,7 @@ void ChipRhythm::ProcessDoubleReplacing(double **inputs, double **outputs, int n
       mOscillator.setMuted(true);
     }
 
-    leftOutput[i] = rightOutput[i] = mOscillator.nextSample() * velocity / 127.0;
+    leftOutput[i] = rightOutput[i] = mOscillator.nextSample() * mEnvelopeGenerator.nextSample() * velocity / 127.0;
   }
 
   mMIDIReceiver.flush(nFrames);
@@ -116,6 +124,7 @@ void ChipRhythm::Reset()
   IMutexLock lock(this);
 
   mOscillator.setSampleRate(GetSampleRate());
+  mEnvelopeGenerator.SetSampleRate(GetSampleRate());
 }
 
 void ChipRhythm::OnParamChange(int paramIdx)
