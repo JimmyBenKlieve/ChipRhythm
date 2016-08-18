@@ -54,6 +54,7 @@
     <ClInclude Include="GallantSignal.h" />
     <ClInclude Include="Delegate.h" />
     <ClInclude Include="WaveformGenerator.h" />
+    <ClInclude Include="Filter.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\WDL\rtaudiomidi\RtAudio.cpp">
@@ -85,6 +86,7 @@
     <ClCompile Include="MIDIReceiver.cpp" />
     <ClCompile Include="EnvelopeGenerator.cpp" />
     <ClCompile Include="WaveformGenerator.cpp" />
+    <ClCompile Include="Filter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="ChipRhythm.rc" />

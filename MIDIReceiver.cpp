@@ -19,6 +19,31 @@ MIDIReceiver::~MIDIReceiver()
 {
 }
 
+bool MIDIReceiver::getKeyStatus(int keyIndex) const
+{
+  return mKeyStatus[keyIndex];
+}
+
+int MIDIReceiver::getNumKeys() const
+{
+  return mNumKeys;
+}
+
+int MIDIReceiver::getLastNoteNumber() const
+{
+  return mLastNoteNumber;
+}
+
+int MIDIReceiver::getLastVelocity() const
+{
+  return mLastVelocity;
+}
+
+double MIDIReceiver::getLastFrequency() const
+{
+  return mLastFrequency;
+}
+
 void MIDIReceiver::advance()
 {
   while (!mMidiQueue.Empty()) {
@@ -47,7 +72,7 @@ void MIDIReceiver::advance()
         mLastVelocity = velocity;
 
         // emit a "note on" signal
-        noteOn(noteNumber, velocity);
+        mNoteOn(noteNumber, velocity);
       }
     }
     else {
@@ -61,7 +86,7 @@ void MIDIReceiver::advance()
         mLastNoteNumber = -1;
 
         // emit a "note off" signal
-        noteOff(noteNumber, mLastVelocity);
+        mNoteOff(noteNumber, mLastVelocity);
       }
     }
     mMidiQueue.Remove();

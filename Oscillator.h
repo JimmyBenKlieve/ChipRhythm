@@ -1,16 +1,17 @@
 #pragma once
 #include <math.h>
 
-enum OscillatorMode {
-  OSCILLATOR_MODE_SINE = 0,
-  OSCILLATOR_MODE_SAW,
-  OSCILLATOR_MODE_SQUARE,
-  OSCILLATOR_MODE_TRIANGLE,
-  kNumOscillatorModes
-};
-
 class Oscillator
 {
+public:
+  enum OscillatorMode {
+    OSCILLATOR_MODE_SINE = 0,
+    OSCILLATOR_MODE_SAW,
+    OSCILLATOR_MODE_SQUARE,
+    OSCILLATOR_MODE_TRIANGLE,
+    kNumOscillatorModes
+  };
+
 public:
   Oscillator();
   ~Oscillator();

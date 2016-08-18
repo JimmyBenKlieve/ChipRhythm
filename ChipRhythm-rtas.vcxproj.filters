@@ -124,6 +124,7 @@
     <ClInclude Include="GallantSignal.h" />
     <ClInclude Include="Delegate.h" />
     <ClInclude Include="WaveformGenerator.h" />
+    <ClInclude Include="Filter.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\WDL\IPlug\Hosts.cpp">
@@ -188,6 +189,7 @@
     <ClCompile Include="MIDIReceiver.cpp" />
     <ClCompile Include="EnvelopeGenerator.cpp" />
     <ClCompile Include="WaveformGenerator.cpp" />
+    <ClCompile Include="Filter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ChipRhythm-rtas.def" />

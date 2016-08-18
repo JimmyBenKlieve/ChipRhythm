@@ -43,7 +43,7 @@ void WaveformGenerator::setMode(OscillatorMode mode)
     break;
   case OSCILLATOR_MODE_SQUARE:
     for (unsigned int i = 0; i < mResolution; ++i) {
-      mWaveform[i] = i < (mResolution / 2) ? 1.0 : 0.0;
+      mWaveform[i] = i < (mResolution / 2) ? 1.0 : -1.0;
     }
     break;
   }

@@ -9,6 +9,7 @@
     <ClCompile Include="MIDIReceiver.cpp" />
     <ClCompile Include="EnvelopeGenerator.cpp" />
     <ClCompile Include="WaveformGenerator.cpp" />
+    <ClCompile Include="Filter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ChipRhythm.h" />
@@ -22,6 +23,7 @@
     <ClInclude Include="GallantSignal.h" />
     <ClInclude Include="Delegate.h" />
     <ClInclude Include="WaveformGenerator.h" />
+    <ClInclude Include="Filter.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="ChipRhythm.rc" />

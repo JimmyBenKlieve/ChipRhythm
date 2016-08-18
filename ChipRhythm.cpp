@@ -8,12 +8,32 @@ const int kNumPrograms = 1;
 
 enum EParams
 {
-  kWaveform = 0,
-  kEnvAttack,
+  // oscillator
+  kOscWaveform = 0,
+  kOscPitchMod,
+  // oscillator volume envelope
   kEnvDelay,
+  kEnvAttack,
   kEnvDecay,
   kEnvSustain,
   kEnvRelease,
+  // filter
+  kFilterMode,
+  kFilterCutoff,
+  kFilterResonance,
+  kFilterLfoAmount,
+  kFilterEnvAmount,
+  // filter envelope
+  kFIlterEnvAttack,
+  kFilterEnvDecay,
+  kFilterEnvSustain,
+  kFilterEnvRelease,
+  // lfo
+  kLfoWaveform,
+  kLfoFrequency,
+  // lfo envelope
+  kLfoEnvDelay,
+  kLfoEnvAttack,
   kNumParams
 };
 
@@ -32,31 +52,20 @@ enum ELayout
 ChipRhythm::ChipRhythm(IPlugInstanceInfo instanceInfo)
   :	IPLUG_CTOR(kNumParams, kNumPrograms, instanceInfo)
   , lastVirtualKeyboardNoteNumber(virtualKeyboardMinimumNoteNumber - 1)
+  , mFilterEnvelopeAmount(0.0)
+  , mLfoFilterModAmount(0.0)
 {
   TRACE;
 
-  IGraphics* pGraphics = MakeGraphics(this, kWidth, kHeight);
-  pGraphics->AttachBackground(BG_ID, BG_FN);
-
-  IBitmap whiteKeyImage = pGraphics->LoadIBitmap(WHITE_KEY_ID, WHITE_KEY_FN, 6);
-  IBitmap blackKeyImage = pGraphics->LoadIBitmap(BLACK_KEY_ID, BLACK_KEY_FN);
-
-  //                            C#     D#          F#      G#      A#
-  int keyCoordinates[12] = { 0, 7, 12, 20, 24, 36, 43, 48, 56, 60, 69, 72 };
-  mVirtualKeyboard = new IKeyboardControl(this, kKeyboardX, kKeyboardY, virtualKeyboardMinimumNoteNumber, 5, &whiteKeyImage, &blackKeyImage, keyCoordinates);
-  pGraphics->AttachControl(mVirtualKeyboard);
-
-  GetParam(kWaveform)->InitEnum("Waveform", OSCILLATOR_MODE_SINE, kNumOscillatorModes);
-  GetParam(kWaveform)->SetDisplayText(0, "Sine");
-  IBitmap waveformImage = pGraphics->LoadIBitmap(OSCILLATOR_MODE_ID, OSCILLATOR_MODE_FN, 4);
-  pGraphics->AttachControl(new ISwitchControl(this, kWaveformX, kWaveformY, kWaveform, &waveformImage));
-
-  AttachGraphics(pGraphics);
-
+  CreateParams();
+  CreateGraphics();
   CreatePresets();
 
-  mMIDIReceiver.noteOn.Connect(this, &ChipRhythm::onNoteOn);
-  mMIDIReceiver.noteOff.Connect(this, &ChipRhythm::onNoteOff);
+  mMIDIReceiver.mNoteOn.Connect(this, &ChipRhythm::onNoteOn);
+  mMIDIReceiver.mNoteOff.Connect(this, &ChipRhythm::onNoteOff);
+
+  mEnvelopeGenerator.mBeganEnvelopeCycle.Connect(this, &ChipRhythm::onBeganEnvelopeCycle);
+  mEnvelopeGenerator.mFinishedEnvelopeCycle.Connect(this, &ChipRhythm::onFinishedEnvelopeCycle);
 }
 
 ChipRhythm::~ChipRhythm() {}
@@ -85,6 +94,36 @@ void ChipRhythm::ProcessVirtualKeyboard()
   lastVirtualKeyboardNoteNumber = virtualKeyboardNoteNumber;
 }
 
+void ChipRhythm::CreateParams()
+{
+}
+
+void ChipRhythm::CreateGraphics()
+{
+  IGraphics* pGraphics = MakeGraphics(this, kWidth, kHeight);
+  pGraphics->AttachBackground(BG_ID, BG_FN);
+
+  IBitmap whiteKeyImage = pGraphics->LoadIBitmap(WHITE_KEY_ID, WHITE_KEY_FN, 6);
+  IBitmap blackKeyImage = pGraphics->LoadIBitmap(BLACK_KEY_ID, BLACK_KEY_FN);
+
+  //                            C#     D#          F#      G#      A#
+  int keyCoordinates[12] = { 0, 7, 12, 20, 24, 36, 43, 48, 56, 60, 69, 72 };
+  mVirtualKeyboard = new IKeyboardControl(this, kKeyboardX, kKeyboardY, virtualKeyboardMinimumNoteNumber, 5, &whiteKeyImage, &blackKeyImage, keyCoordinates);
+  pGraphics->AttachControl(mVirtualKeyboard);
+
+  GetParam(kOscWaveform)->InitEnum("Waveform", WaveformGenerator::OSCILLATOR_MODE_SINE, WaveformGenerator::kNumOscillatorModes);
+  GetParam(kOscWaveform)->SetDisplayText(0, "Sine");
+  IBitmap waveformImage = pGraphics->LoadIBitmap(OSCILLATOR_MODE_ID, OSCILLATOR_MODE_FN, 4);
+  pGraphics->AttachControl(new ISwitchControl(this, kWaveformX, kWaveformY, kOscWaveform, &waveformImage));
+
+  AttachGraphics(pGraphics);
+}
+
+void ChipRhythm::CreatePresets()
+{
+
+}
+
 void ChipRhythm::ProcessDoubleReplacing(double **inputs, double **outputs, int nFrames)
 {
   // Mutex is already locked for us.
@@ -98,15 +137,13 @@ void ChipRhythm::ProcessDoubleReplacing(double **inputs, double **outputs, int n
     mMIDIReceiver.advance();
 
     int velocity = mMIDIReceiver.getLastVelocity();
-    if (velocity > 0) {
-      mWaveformGenerator.setFrequency(mMIDIReceiver.getLastFrequency());
-      mWaveformGenerator.setMuted(false);
-    }
-    else {
-      mWaveformGenerator.setMuted(true);
-    }
+    double lfoFilterModulation = mLfo.nextSample() * mLfoFilterModAmount;
+    
 
-    leftOutput[i] = rightOutput[i] = mWaveformGenerator.nextSample() * mEnvelopeGenerator.nextSample() * velocity / 127.0;
+    mWaveformGenerator.setFrequency(mMIDIReceiver.getLastFrequency());
+    
+    mFilter.setCutoffMod((mFilterEnvelopeGenerator.nextSample() * mFilterEnvelopeAmount) + lfoFilterModulation);
+    leftOutput[i] = rightOutput[i] = mFilter.process(mWaveformGenerator.nextSample() * mEnvelopeGenerator.nextSample() * velocity / 127.0);
   }
 
   mMIDIReceiver.flush(nFrames);
@@ -124,7 +161,8 @@ void ChipRhythm::Reset()
   IMutexLock lock(this);
 
   mWaveformGenerator.setSampleRate(GetSampleRate());
-  mEnvelopeGenerator.SetSampleRate(GetSampleRate());
+  mEnvelopeGenerator.setSampleRate(GetSampleRate());
+  mFilterEnvelopeGenerator.setSampleRate(GetSampleRate());
 }
 
 void ChipRhythm::OnParamChange(int paramIdx)
@@ -133,14 +171,10 @@ void ChipRhythm::OnParamChange(int paramIdx)
 
   switch (paramIdx)
   {
-  case kWaveform:
-    mWaveformGenerator.setMode(static_cast<OscillatorMode>(GetParam(kWaveform)->Int()));
+  case kOscWaveform:
+    mWaveformGenerator.setMode(static_cast<WaveformGenerator::OscillatorMode>(GetParam(kWaveform)->Int()));
 
   default:
     break;
   }
-}
-
-void ChipRhythm::CreatePresets()
-{
 }

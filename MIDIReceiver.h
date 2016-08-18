@@ -3,6 +3,7 @@
 
 #include "IMidiQueue.h"
 #include "GallantSignal.h"
+
 using Gallant::Signal2;
 
 class MIDIReceiver
@@ -11,29 +12,11 @@ public:
   MIDIReceiver();
   ~MIDIReceiver();
 
-  inline bool getKeyStatus(int keyIndex) const
-  {
-    return mKeyStatus[keyIndex];
-  }
-  inline int getNumKeys() const
-  {
-    return mNumKeys;
-  }
-   
-  inline int getLastNoteNumber() const
-  {
-    return mLastNoteNumber;
-  }
-  
-  inline int getLastVelocity() const
-  {
-    return mLastVelocity;
-  }
-  
-  inline double getLastFrequency() const
-  {
-    return mLastFrequency;
-  }
+  bool getKeyStatus(int keyIndex) const;
+  int getNumKeys() const;
+  int getLastNoteNumber() const;
+  int getLastVelocity() const;
+  double getLastFrequency() const;
 
   void advance();
   void onMessageReceived(IMidiMsg *midiMessage);
@@ -56,8 +39,8 @@ private:
   }
 
 public:
-  Signal2<int, int> noteOn;
-  Signal2<int, int> noteOff;
+  Signal2<int, int> mNoteOn;
+  Signal2<int, int> mNoteOff;
 
 private:
   IMidiQueue mMidiQueue;

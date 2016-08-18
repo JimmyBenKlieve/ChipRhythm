@@ -1,4 +1,8 @@
 #pragma once
+#include "GallantSignal.h"
+
+using Gallant::Signal0;
+
 class EnvelopeGenerator
 {
 public:
@@ -18,17 +22,22 @@ public:
 
   void enterStage(EnvelopeStage newStage);
   double nextSample();
-  void SetSampleRate(double newSampleRate);
-  
+  void setSampleRate(double newSampleRate);
+  void setStageValue(EnvelopeStage stage, double value);
+
   inline EnvelopeStage getCurrentStage() const
   {
     return mCurrentStage;
   }
 
-  const double mMinimumLevel;
-
 private:
   void calculateMultiplier(double startLevel, double endLevel, unsigned long long lengthInSamples);
+
+public:
+  Signal0<> mBeganEnvelopeCycle;
+  Signal0<> mFinishedEnvelopeCycle;
+
+  const double mMinimumLevel;
 
 private:
   unsigned long long mCurrentSampleIndex;
