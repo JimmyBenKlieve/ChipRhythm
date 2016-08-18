@@ -4,6 +4,7 @@
 #include "IPlug_include_in_plug_hdr.h"
 
 #include "Oscillator.h"
+#include "WaveformGenerator.h"
 #include "MIDIReceiver.h"
 #include "EnvelopeGenerator.h"
 
@@ -50,7 +51,7 @@ private:
   IControl *mVirtualKeyboard;
 
   MIDIReceiver mMIDIReceiver;
-  Oscillator mOscillator;
+  WaveformGenerator mWaveformGenerator;
   EnvelopeGenerator mEnvelopeGenerator;
 };
 

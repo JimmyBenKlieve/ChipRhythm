@@ -21,30 +21,29 @@ Oscillator::~Oscillator()
 }
 
 double Oscillator::nextSample() {
-  if (mIsMuted) {
-    return 0.0;
-  }
-
-  double newPhase = int(mPhase / mSegLength) * mSegLength;
   double value = 0.0;
+
+  if (mIsMuted) {
+    return value;
+  }
 
   switch (mOscillatorMode) {
   case OSCILLATOR_MODE_SINE:
-    value = sin(newPhase);
+    value = sin(mPhase);
     break;
   case OSCILLATOR_MODE_TRIANGLE:
     if (mPhase < mPI) {
-      value = 1 - fabs(1 - (2.0 * newPhase / mPI));
+      value = 1.0 - fabs(1.0 - (2.0 * mPhase / mPI));
     }
     else {
-      value = fabs(3 - (2.0 * newPhase / mPI)) - 1;
+      value = fabs(3.0 - (2.0 * mPhase / mPI)) - 1.0;
     }
     break;
   case OSCILLATOR_MODE_SAW:
-    value = 1.0 - (2.0 * newPhase / twoPI);
+    value = 1.0 - (2.0 * mPhase / twoPI);
     break;
   case OSCILLATOR_MODE_SQUARE:
-    value = newPhase < mPI ? 1.0 : -1.0;
+    value = mPhase < mPI ? 1.0 : -1.0;
     break;
   }
 

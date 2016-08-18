@@ -12,7 +12,7 @@ EnvelopeGenerator::EnvelopeGenerator()
   , mNextStageSampleIndex(0)
 {
   mStageValue[ENVELOPE_STAGE_OFF] = 0.0; // level
-  mStageValue[ENVELOPE_STAGE_DELAY] = 1.0; // time
+  mStageValue[ENVELOPE_STAGE_DELAY] = 0.0; // time
   mStageValue[ENVELOPE_STAGE_ATTACK] = 0.01; // time
   mStageValue[ENVELOPE_STAGE_DECAY] = 0.5; // time
   mStageValue[ENVELOPE_STAGE_SUSTAIN] = 0.1; // level

@@ -99,14 +99,14 @@ void ChipRhythm::ProcessDoubleReplacing(double **inputs, double **outputs, int n
 
     int velocity = mMIDIReceiver.getLastVelocity();
     if (velocity > 0) {
-      mOscillator.setFrequency(mMIDIReceiver.getLastFrequency());
-      mOscillator.setMuted(false);
+      mWaveformGenerator.setFrequency(mMIDIReceiver.getLastFrequency());
+      mWaveformGenerator.setMuted(false);
     }
     else {
-      mOscillator.setMuted(true);
+      mWaveformGenerator.setMuted(true);
     }
 
-    leftOutput[i] = rightOutput[i] = mOscillator.nextSample() * mEnvelopeGenerator.nextSample() * velocity / 127.0;
+    leftOutput[i] = rightOutput[i] = mWaveformGenerator.nextSample() * mEnvelopeGenerator.nextSample() * velocity / 127.0;
   }
 
   mMIDIReceiver.flush(nFrames);
@@ -123,7 +123,7 @@ void ChipRhythm::Reset()
   TRACE;
   IMutexLock lock(this);
 
-  mOscillator.setSampleRate(GetSampleRate());
+  mWaveformGenerator.setSampleRate(GetSampleRate());
   mEnvelopeGenerator.SetSampleRate(GetSampleRate());
 }
 
@@ -134,7 +134,7 @@ void ChipRhythm::OnParamChange(int paramIdx)
   switch (paramIdx)
   {
   case kWaveform:
-    mOscillator.setMode(static_cast<OscillatorMode>(GetParam(kWaveform)->Int()));
+    mWaveformGenerator.setMode(static_cast<OscillatorMode>(GetParam(kWaveform)->Int()));
 
   default:
     break;
