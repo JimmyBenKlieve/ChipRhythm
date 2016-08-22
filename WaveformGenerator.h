@@ -19,7 +19,6 @@ public:
     mResolution = resolution;
     mSegLength = twoPI / double(mResolution);
   }
-
   virtual void setMode(OscillatorMode mode);
   virtual double nextSample();
 

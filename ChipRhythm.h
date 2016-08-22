@@ -3,11 +3,8 @@
 
 #include "IPlug_include_in_plug_hdr.h"
 
-#include "Oscillator.h"
-#include "WaveformGenerator.h"
 #include "MIDIReceiver.h"
-#include "EnvelopeGenerator.h"
-#include "Filter.h"
+#include "VoiceManager.h"
 
 class ChipRhythm : public IPlug
 {
@@ -36,28 +33,6 @@ private:
   void CreateGraphics();
   void CreatePresets();
 
-  inline void onNoteOn(const int noteNumber, const int velocity)
-  {
-    mEnvelopeGenerator.enterStage(EnvelopeGenerator::ENVELOPE_STAGE_DELAY);
-    mFilterEnvelopeGenerator.enterStage(EnvelopeGenerator::ENVELOPE_STAGE_ATTACK);
-  }
-
-  inline void onNoteOff(const int noteNumber, const int velocity) 
-  {
-    mEnvelopeGenerator.enterStage(EnvelopeGenerator::ENVELOPE_STAGE_RELEASE);
-    mFilterEnvelopeGenerator.enterStage(EnvelopeGenerator::ENVELOPE_STAGE_RELEASE);
-  }
-
-  inline void onBeganEnvelopeCycle()
-  {
-    mWaveformGenerator.setMuted(false);
-  }
-
-  inline void onFinishedEnvelopeCycle()
-  {
-    mWaveformGenerator.setMuted(true);
-  }
-
 public:
   int lastVirtualKeyboardNoteNumber;
   static const int virtualKeyboardMinimumNoteNumber = 36;
@@ -66,16 +41,7 @@ private:
   IControl *mVirtualKeyboard;
 
   MIDIReceiver mMIDIReceiver;
-
-  WaveformGenerator mWaveformGenerator;
-  EnvelopeGenerator mEnvelopeGenerator;
-
-  Filter mFilter;
-  EnvelopeGenerator mFilterEnvelopeGenerator;
-  double mFilterEnvelopeAmount;
-
-  Oscillator mLfo;
-  double mLfoFilterModAmount;
+  VoiceManager mVoiceManager;
 };
 
 #endif

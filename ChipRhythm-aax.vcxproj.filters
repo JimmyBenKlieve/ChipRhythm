@@ -60,6 +60,8 @@
     <ClCompile Include="EnvelopeGenerator.cpp" />
     <ClCompile Include="WaveformGenerator.cpp" />
     <ClCompile Include="Filter.cpp" />
+    <ClCompile Include="Voice.cpp" />
+    <ClCompile Include="VoiceManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\WDL\IPlug\Containers.h">
@@ -125,6 +127,8 @@
     <ClInclude Include="Delegate.h" />
     <ClInclude Include="WaveformGenerator.h" />
     <ClInclude Include="Filter.h" />
+    <ClInclude Include="Voice.h" />
+    <ClInclude Include="VoiceManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="ChipRhythm.rc" />

@@ -1,7 +1,6 @@
 #include "WaveformGenerator.h"
 
 
-
 WaveformGenerator::WaveformGenerator()
   : mResolution(32)
   , mSegLength(twoPI / double(mResolution))
@@ -52,10 +51,6 @@ void WaveformGenerator::setMode(OscillatorMode mode)
 double WaveformGenerator::nextSample()
 {
   double value = 0.0;
-
-  if (mIsMuted) {
-    return value;
-  }
 
   unsigned int index = unsigned int(mPhase / mSegLength);
 

@@ -7,7 +7,7 @@ Filter::Filter()
   , mFilterAttenuation(FILTER_ATTENUATION_12DB)
   , mCutoff(0.99)
   , mResonance(0.0)
-  , mCutoffModulation(0.0)
+  , mCutoffMod(0.0)
 {
   mBuffer[0] = 0.0;
   mBuffer[1] = 0.0;
@@ -48,4 +48,12 @@ double Filter::process(double inputValue)
   default: 
     return 0.0;
   }
+}
+
+void Filter::reset()
+{
+  mBuffer[0] = 0.0;
+  mBuffer[1] = 0.0;
+  mBuffer[2] = 0.0;
+  mBuffer[3] = 0.0;
 }

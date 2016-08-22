@@ -14,9 +14,6 @@ public:
 
   bool getKeyStatus(int keyIndex) const;
   int getNumKeys() const;
-  int getLastNoteNumber() const;
-  int getLastVelocity() const;
-  double getLastFrequency() const;
 
   void advance();
   void onMessageReceived(IMidiMsg *midiMessage);
@@ -48,10 +45,6 @@ private:
   static const int keyCount = 128;
   int mNumKeys;
   bool mKeyStatus[keyCount];
-
-  int mLastNoteNumber;
-  int mLastVelocity;
-  double mLastFrequency;
 
   int mOffset;
 };

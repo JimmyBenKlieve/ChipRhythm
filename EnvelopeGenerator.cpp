@@ -1,13 +1,13 @@
 #include "EnvelopeGenerator.h"
 #include <math.h>
 
+double EnvelopeGenerator::mSampleRate = 44100.0;
 
 EnvelopeGenerator::EnvelopeGenerator()
   : mMinimumLevel(0.0001)
   , mCurrentStage(ENVELOPE_STAGE_OFF)
   , mCurrentLevel(mMinimumLevel)
   , mMultiplier(1.0)
-  , mSampleRate(44100.0)
   , mCurrentSampleIndex(0)
   , mNextStageSampleIndex(0)
 {
@@ -22,6 +22,15 @@ EnvelopeGenerator::EnvelopeGenerator()
 
 EnvelopeGenerator::~EnvelopeGenerator()
 {
+}
+
+void EnvelopeGenerator::reset()
+{
+  mCurrentStage = ENVELOPE_STAGE_OFF;
+  mCurrentLevel = mMinimumLevel;
+  mMultiplier = 1.0;
+  mCurrentSampleIndex = 0;
+  mNextStageSampleIndex = 0;
 }
 
 void EnvelopeGenerator::enterStage(EnvelopeStage newStage)

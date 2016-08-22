@@ -20,15 +20,17 @@ public:
   EnvelopeGenerator();
   ~EnvelopeGenerator();
 
-  void enterStage(EnvelopeStage newStage);
-  double nextSample();
-  void setSampleRate(double newSampleRate);
-  void setStageValue(EnvelopeStage stage, double value);
-
   inline EnvelopeStage getCurrentStage() const
   {
     return mCurrentStage;
   }
+
+  static void setSampleRate(double newSampleRate);
+
+  void reset();
+  void enterStage(EnvelopeStage newStage);
+  double nextSample();
+  void setStageValue(EnvelopeStage stage, double value);
 
 private:
   void calculateMultiplier(double startLevel, double endLevel, unsigned long long lengthInSamples);
@@ -40,6 +42,8 @@ public:
   const double mMinimumLevel;
 
 private:
+  static double mSampleRate;
+
   unsigned long long mCurrentSampleIndex;
   unsigned long long mNextStageSampleIndex;
 
@@ -47,7 +51,6 @@ private:
 
   double mCurrentLevel;
   double mMultiplier;
-  double mSampleRate;
   double mStageValue[kNumEnvelopeStages];
 };
 

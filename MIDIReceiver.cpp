@@ -4,9 +4,6 @@
 
 MIDIReceiver::MIDIReceiver()
   : mNumKeys(0)
-  , mLastNoteNumber(-1)
-  , mLastVelocity(0)
-  , mLastFrequency(-1.0)
   , mOffset(0)
 {
   for (int i = 0; i < keyCount; ++i) {
@@ -29,21 +26,6 @@ int MIDIReceiver::getNumKeys() const
   return mNumKeys;
 }
 
-int MIDIReceiver::getLastNoteNumber() const
-{
-  return mLastNoteNumber;
-}
-
-int MIDIReceiver::getLastVelocity() const
-{
-  return mLastVelocity;
-}
-
-double MIDIReceiver::getLastFrequency() const
-{
-  return mLastFrequency;
-}
-
 void MIDIReceiver::advance()
 {
   while (!mMidiQueue.Empty()) {
@@ -63,15 +45,6 @@ void MIDIReceiver::advance()
       if (mKeyStatus[noteNumber] == false) {
         mKeyStatus[noteNumber] = true;
         mNumKeys += 1;
-      }
-
-      // a key pressed later overrides any previously pressed key
-      if (noteNumber != mLastNoteNumber) {
-        mLastNoteNumber = noteNumber;
-        mLastFrequency = noteNumberToFrequency(mLastNoteNumber);
-        mLastVelocity = velocity;
-
-        // emit a "note on" signal
         mNoteOn(noteNumber, velocity);
       }
     }
@@ -79,21 +52,12 @@ void MIDIReceiver::advance()
       if (mKeyStatus[noteNumber] == true) {
         mKeyStatus[noteNumber] = false;
         mNumKeys -= 1;
-      }
-
-      // last note released, nothing should play
-      if (noteNumber == mLastNoteNumber) {
-        mLastNoteNumber = -1;
-
-        // emit a "note off" signal
-        mNoteOff(noteNumber, mLastVelocity);
+        mNoteOff(noteNumber, velocity);
       }
     }
     mMidiQueue.Remove();
-  
   }
   ++mOffset;
-
 }
 
 void MIDIReceiver::onMessageReceived(IMidiMsg * midiMessage)

@@ -1,5 +1,6 @@
 #include "Oscillator.h"
 
+double Oscillator::mSampleRate = 44100.0;
 
 
 Oscillator::Oscillator()
@@ -8,10 +9,8 @@ Oscillator::Oscillator()
   , twoPI(2 * mPI)
   , mFrequency(440.0)
   , mPhase(0.0)
-  , mSampleRate(44100.0)
   , mLength(32)
   , mSegLength(twoPI / mLength)
-  , mIsMuted(true)
 {
   updateIncrement();
 }
@@ -20,12 +19,13 @@ Oscillator::~Oscillator()
 {
 }
 
+void Oscillator::reset()
+{
+  mPhase = 0.0;
+}
+
 double Oscillator::nextSample() {
   double value = 0.0;
-
-  if (mIsMuted) {
-    return value;
-  }
 
   switch (mOscillatorMode) {
   case OSCILLATOR_MODE_SINE:

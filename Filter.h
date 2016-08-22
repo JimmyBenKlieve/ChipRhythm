@@ -35,7 +35,7 @@ public:
 
   inline void setCutoffMod(double cutoffModulation)
   {
-    mCutoffModulation = cutoffModulation;
+    mCutoffMod = cutoffModulation;
     calculateFeedbackAmount();
   }
 
@@ -51,6 +51,8 @@ public:
     calculateFeedbackAmount();
   }
 
+  void reset();
+
 private:
   inline void calculateFeedbackAmount() 
   {
@@ -59,14 +61,14 @@ private:
 
   inline double getCalculatedCutoff() const 
   {
-    return fmax(fmin(mCutoff + mCutoffModulation, 0.99), 0.01);
+    return fmax(fmin(mCutoff + mCutoffMod, 0.99), 0.01);
   }
 
 private:
   FilterMode mFilterMode;
   FilterAttenuation mFilterAttenuation;
 
-  double mCutoffModulation;
+  double mCutoffMod;
 
   double mCutoff;
   double mResonance;

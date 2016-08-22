@@ -52,8 +52,7 @@ enum ELayout
 ChipRhythm::ChipRhythm(IPlugInstanceInfo instanceInfo)
   :	IPLUG_CTOR(kNumParams, kNumPrograms, instanceInfo)
   , lastVirtualKeyboardNoteNumber(virtualKeyboardMinimumNoteNumber - 1)
-  , mFilterEnvelopeAmount(0.0)
-  , mLfoFilterModAmount(0.0)
+
 {
   TRACE;
 
@@ -61,11 +60,8 @@ ChipRhythm::ChipRhythm(IPlugInstanceInfo instanceInfo)
   CreateGraphics();
   CreatePresets();
 
-  mMIDIReceiver.mNoteOn.Connect(this, &ChipRhythm::onNoteOn);
-  mMIDIReceiver.mNoteOff.Connect(this, &ChipRhythm::onNoteOff);
-
-  mEnvelopeGenerator.mBeganEnvelopeCycle.Connect(this, &ChipRhythm::onBeganEnvelopeCycle);
-  mEnvelopeGenerator.mFinishedEnvelopeCycle.Connect(this, &ChipRhythm::onFinishedEnvelopeCycle);
+  mMIDIReceiver.mNoteOn.Connect(&mVoiceManager, &VoiceManager::onNoteOn);
+  mMIDIReceiver.mNoteOff.Connect(&mVoiceManager, &VoiceManager::onNoteOff);
 }
 
 ChipRhythm::~ChipRhythm() {}
@@ -135,15 +131,7 @@ void ChipRhythm::ProcessDoubleReplacing(double **inputs, double **outputs, int n
 
   for (int i = 0; i < nFrames; ++i) {
     mMIDIReceiver.advance();
-
-    int velocity = mMIDIReceiver.getLastVelocity();
-    double lfoFilterModulation = mLfo.nextSample() * mLfoFilterModAmount;
-    
-
-    mWaveformGenerator.setFrequency(mMIDIReceiver.getLastFrequency());
-    
-    mFilter.setCutoffMod((mFilterEnvelopeGenerator.nextSample() * mFilterEnvelopeAmount) + lfoFilterModulation);
-    leftOutput[i] = rightOutput[i] = mFilter.process(mWaveformGenerator.nextSample() * mEnvelopeGenerator.nextSample() * velocity / 127.0);
+    leftOutput[i] = rightOutput[i] = mVoiceManager.nextSample();
   }
 
   mMIDIReceiver.flush(nFrames);
@@ -160,9 +148,7 @@ void ChipRhythm::Reset()
   TRACE;
   IMutexLock lock(this);
 
-  mWaveformGenerator.setSampleRate(GetSampleRate());
-  mEnvelopeGenerator.setSampleRate(GetSampleRate());
-  mFilterEnvelopeGenerator.setSampleRate(GetSampleRate());
+  mVoiceManager.setSampleRate(GetSampleRate());
 }
 
 void ChipRhythm::OnParamChange(int paramIdx)
@@ -172,7 +158,6 @@ void ChipRhythm::OnParamChange(int paramIdx)
   switch (paramIdx)
   {
   case kOscWaveform:
-    mWaveformGenerator.setMode(static_cast<WaveformGenerator::OscillatorMode>(GetParam(kWaveform)->Int()));
 
   default:
     break;

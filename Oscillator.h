@@ -15,7 +15,7 @@ public:
 public:
   Oscillator();
   ~Oscillator();
-  
+
   virtual inline void setMode(OscillatorMode mode) 
   {
     mOscillatorMode = mode;
@@ -33,11 +33,7 @@ public:
     updateIncrement();
   }
 
-  virtual inline void setMuted(bool muted)
-  {
-    mIsMuted = muted;
-  }
-
+  virtual void reset();
   virtual double nextSample();
 
 protected:
@@ -47,19 +43,18 @@ protected:
   }
 
 protected:
+  static double mSampleRate;
+
   const double mPI;
   const double twoPI;
   
   OscillatorMode mOscillatorMode;
-
-  bool mIsMuted;
 
   unsigned short mLength;
   double mSegLength;
 
   double mFrequency;
   double mPhase;
-  double mSampleRate;
   double mPhaseIncrement;
 };
 
