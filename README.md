@@ -1,3 +1,5 @@
+**Considering to rewrite this project by using [JUCE][https://github.com/julianstorer/JUCE] instead of wdl-ol**
+
 # About this repository
 This is an 8-bit sound waveform generator/synthesizer that I long wish to build.
 I expect this audio plugin should be simple yet powerful to generate 8-bit sound (like Famicom but no just Famicom).
@@ -73,4 +75,5 @@ MIT！MIT！MIT！重要事情说三遍。
 [Dependencies]: https://github.com/olilarkin/wdl-ol
 [Tools-JKnobMan]: http://www.g200kg.com/en/software/knobman.html
 [Tools-SAVIHost]: http://www.hermannseib.com/english/savihost.htm
+
 
